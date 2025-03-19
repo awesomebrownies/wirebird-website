@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { Suspense } from "react";
 import Image from "next/image";
 import SizeLayout from "../sizelayout.js";
 import { useRouter, useSearchParams } from "next/navigation";
