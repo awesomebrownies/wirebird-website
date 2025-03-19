@@ -71,7 +71,7 @@ export default function DownloadPage() {
   const currentSection = sectionDetails[section] || sectionDetails["windows"];
 
   return (
-    <div>
+    <Suspense fallback={<div>Loading...</div>}>
       <SizeLayout addStyle="bg-white">
         <div className="flex flex-col mt-16">
           <div className="flex flex-row items-center">
@@ -129,6 +129,6 @@ export default function DownloadPage() {
           </div>
         </div>
       </SizeLayout>
-    </div>
+    </Suspense>
   );
 }
