@@ -6,6 +6,7 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { FaWindows, FaAndroid, FaApple } from "react-icons/fa";
 import { VscTerminalLinux } from "react-icons/vsc";
 import { BsRouterFill } from "react-icons/bs";
+import { Suspense } from "react";
 import SizeLayout from '../sizelayout.js';
 
 export default function DownloadLayout({ children }) {
@@ -48,7 +49,7 @@ export default function DownloadLayout({ children }) {
   }, [pathname, searchParams, router, redirected]);
 
   return (
-    <div>
+    <Suspense fallback={<div>Loading...</div>}>
       <SizeLayout addStyle="bg-white">
         <div className="flex w-full flex-col text-gray-800 mt-44">
           <div className="flex w-full flex-row justify-center space-x-16">
@@ -75,6 +76,6 @@ export default function DownloadLayout({ children }) {
       </SizeLayout>
       {children}
       <SizeLayout addStyle="bg-black p-40 mt-52" />
-    </div>
+    </Suspense>
   );
 }
