@@ -2,17 +2,80 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { Suspense } from "react";
 import Image from "next/image";
 import SizeLayout from "../sizelayout.js";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from 'react'
+
+function PageContent(){
+  const searchParams = useSearchParams();
+  const section = searchParams.get("section") || "windows"; // Default to Windows
+  const currentSection = sectionDetails[section] || sectionDetails["windows"];
+
+  return (
+    <SizeLayout addStyle="bg-white">
+    <div className="flex flex-col mt-16">
+      <div className="flex flex-row items-center">
+        <Image
+          src={currentSection.logo}
+          width={60}
+          height={60}
+          alt=""
+          className=""
+        />
+        <h1 className="text-4xl font-sans font-semibold ml-2">
+          {currentSection.title}
+        </h1>
+      </div>
+      <p className="text-2xl font-sans mt-3">{currentSection.description}</p>
+
+      <div className="flex items-center space-x-4 mt-10">
+        <Button 
+          onClick={() => {
+            router.push("/download/download-thanks")
+          }}
+        className="w-28 rounded-r-none mr-[-0.85rem]"
+        >
+          Download
+        </Button>
+
+        <div className="relative">
+          <Button
+            onClick={() => {
+              setDropdownOpen(!isDropdownOpen);
+            }}
+            className="w-fit flex justify-between items-center rounded-l-none"
+          >
+            <span>{currentSection.downloadOptions[0].label}</span>
+            <IoMdArrowDropdown
+              size={50}
+              className="flex-shrink-0 text-lg"
+            />
+          </Button>
+
+          {isDropdownOpen && (
+            <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+              {currentSection.downloadOptions.map((option, index) => (
+                <a
+                  key={index}
+                  href={option.link}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  {option.label}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </SizeLayout>
+  );
+}
 
 export default function DownloadPage() {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const section = searchParams.get("section") || "windows"; // Default to Windows
-
   // Define content for each section
   const sectionDetails = {
     windows: {
@@ -69,67 +132,9 @@ export default function DownloadPage() {
     },
   };
 
-  const currentSection = sectionDetails[section] || sectionDetails["windows"];
-
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <SizeLayout addStyle="bg-white">
-        <div className="flex flex-col mt-16">
-          <div className="flex flex-row items-center">
-            <Image
-              src={currentSection.logo}
-              width={60}
-              height={60}
-              alt=""
-              className=""
-            />
-            <h1 className="text-4xl font-sans font-semibold ml-2">
-              {currentSection.title}
-            </h1>
-          </div>
-          <p className="text-2xl font-sans mt-3">{currentSection.description}</p>
-
-          <div className="flex items-center space-x-4 mt-10">
-            <Button 
-              onClick={() => {
-                router.push("/download/download-thanks")
-              }}
-            className="w-28 rounded-r-none mr-[-0.85rem]"
-            >
-              Download
-            </Button>
-
-            <div className="relative">
-              <Button
-                onClick={() => {
-                  setDropdownOpen(!isDropdownOpen);
-                }}
-                className="w-fit flex justify-between items-center rounded-l-none"
-              >
-                <span>{currentSection.downloadOptions[0].label}</span>
-                <IoMdArrowDropdown
-                  size={50}
-                  className="flex-shrink-0 text-lg"
-                />
-              </Button>
-
-              {isDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-                  {currentSection.downloadOptions.map((option, index) => (
-                    <a
-                      key={index}
-                      href={option.link}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      {option.label}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </SizeLayout>
+        <PageContent />
     </Suspense>
   );
 }

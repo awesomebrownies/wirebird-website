@@ -1,15 +1,11 @@
 "use client"
-import { Button } from "@/components/ui/button";
-import { useState} from 'react';
-import { IoMdArrowDropdown } from "react-icons/io";
-import { Suspense } from "react";
-import Image from "next/image";
+import { Suspense } from 'react'
 import SizeLayout from '../../sizelayout.js';
 
 export default function Home() {
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense>
       <SizeLayout addStyle="bg-white">
         <div className="flex flex-col mt-16">
           <div className="flex flex-row items-center">
